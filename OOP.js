@@ -88,7 +88,7 @@ A way to avoid these issues is with the this keyword: */
 /* Suppose you were writing a program to keep track of hundreds or even thousands of different birds in an aviary. It would take a lot of time to create all the birds, then change the properties to different values for every one. To more easily create different Bird objects, you can design your Bird constructor to accept parameters: */
 
 function Dog(name, color) {
-        this.name = name,
+    this.name = name,
         this.color = color,
         this.numLegs = 4;
 }
@@ -130,3 +130,333 @@ console.log(ownProps);
  */
 /* 
 name and numLegs are called own properties, because they are defined directly on the instance object. That means that duck and canary each has its own separate copy of these properties. In fact every instance of Bird will have its own copy of these properties. The following code adds all of the own properties of duck to the array ownProps: */
+
+//---------------------------------------------------------------------------------------------
+
+// C10. Use Prototype Properties to Reduce Duplicate Code--------------------------------------
+
+/* Prototypes allow you to easily define methods to all instances of a particular object. The beauty is that the method is applied to the prototype, so it is only stored in the memory once, but every instance of the object has access to it. */
+
+/* function Dog(name) {
+  this.name = name;
+}
+Dog.prototype.numLegs = 2;
+// Only change code above this line
+let beagle = new Dog("Snoopy");
+let peaCock = new Dog("Crimpie");
+console.log(beagle.numLegs);
+console.log(peaCock.numLegs);
+function Dog(name) {
+    this.name = name;
+}
+Dog.prototype.numLegs = 2;
+// Only change code above this line
+let beagle = new Dog("Snoopy");
+let peaCock = new Dog("Crimpie");
+console.log(beagle.numLegs);
+console.log(peaCock.numLegs); */
+
+
+//----------------------------------------------------------------------------------------------
+
+// C11. Iterate Over All Properties------------------------------------------------------------
+
+/* You have now seen two kinds of properties: own properties and prototype properties. Own properties are defined directly on the object instance itself. And prototype properties are defined on the prototype. */
+
+/* function Bird(name){
+    this.name = name;
+}
+Bird.prototype.numLegs = 2;
+const duck = new Bird('Snoopy');
+let ownProps = [];
+let prototypeProps = [];
+for(let property in duck){
+    if(duck.hasOwnProperty(property)){
+        ownProps.push(property);
+    }
+    else{
+        prototypeProps.push(property);
+    }
+}
+console.log(ownProps);
+console.log(prototypeProps); */
+
+//-------------------------------------------------------------------------------------------
+
+// C12. Understand the Constructor Property--------------------------------------------------
+
+/* the constructor property is a reference to the constructor function that created the instance. The advantage of the constructor property is that it's possible to check for this property to find out what kind of object it is. Here's an example of how this could be used: */
+
+/* let duck = new Bird();
+let beagle = new Dog();
+console.log(duck.constructor == Bird);
+console.log(beagle.constructor == Dog); */ //this is the alternative of instanceof
+
+function Dog(name) {
+    this.name = name;
+}
+// Only change code below this line
+function joinDogFraternity(candidate) {
+    if (candidate.constructor == Dog) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+//-------------------------------------------------------------------------------------------
+
+//C13. Change the Prototype to a New Object ------------------------------------------------
+
+function Cat(name) {
+    this.name = name;
+}
+Cat.prototype = {
+    numLegs: 2,
+    eat: function () {
+        console.log('i am eating nom nom nom');
+    },
+    work: function () {
+        console.log('meaow meaow');
+    }
+};
+let catBark = new Cat('Paoli');
+let catSound = new Cat('owao');
+console.log(catSound.numLegs);
+
+//--------------------------------------------------------------------------------------------
+
+// C14. Remember to Set the Constructor Property when Changing the Prototype------------------
+
+/* There is one crucial side effect of manually setting the prototype to a new object. It erases the constructor property! This property can be used to check which constructor function created the instance, but since the property has been overwritten, it now gives false results: */
+
+function Dog(name) {
+    this.name = name;
+}
+
+// Only change code below this line
+Dog.prototype = {
+    constructor: Dog,
+    numLegs: 4,
+    eat: function () {
+        console.log("nom nom nom");
+    },
+    describe: function () {
+        console.log("My name is " + this.name);
+    }
+};
+
+//--------------------------------------------------------------------------------------
+
+// C14. Understand Where an Object’s Prototype Comes From---------------------------------
+
+/*  function Dog(name) {
+   this.name = name;
+ }
+ let beagle = new Dog("Snoopy");
+ console.log(Dog.prototype.isPrototypeOf(beagle)); */
+
+//-------------------------------------------------------------------------------------
+
+//   C15. Understand the Prototype Chain ------------------------------------------------
+
+/* a prototype is an object, a prototype can have its own prototype! In this case, the prototype of Bird.prototype is Object.prototype: */
+
+function Dog(name) {
+    this.name = name;
+}
+
+let beagle = new Dog("Snoopy");
+
+console.log(Dog.prototype.isPrototypeOf(beagle));  // yields true
+Object.prototype.isPrototypeOf(Dog.prototype); //prototype chain
+
+//------------------------------------------------------------------------------------
+
+//C16. Use Inheritance So You Don't Repeat Yoursel ----------------------------------
+
+/* There's a principle in programming called Don't Repeat Yourself (DRY). The reason repeated code is a problem is because any change requires fixing code in multiple places. This usually means more work for programmers and more room for errors. */
+
+/* function Cat(name) {
+    this.name = name;
+}
+
+Cat.prototype = {
+    constructor: Cat,
+};
+
+function Bear(name) {
+    this.name = name;
+}
+
+Bear.prototype = {
+    constructor: Bear,
+};
+
+function Animal() { }
+Animal.prototype = {
+    constructor: Animal,
+    eat: function () {
+        console.log("nom nom nom");
+    }
+}; */
+
+//-----------------------------------------------------------------------------------------
+
+// C17. Inherit Behaviors from a Supertype ------------------------------------------------
+
+function Animal() { }
+
+Animal.prototype = {
+    constructor: Animal,
+    eat: function () {
+        console.log("nom nom nom");
+    }
+};
+
+let animal = new Animal(); //creating object using new
+
+let duck = Object.create(Animal.prototype); // creating object using Object.create
+let beagle = Object.create(Animal.prototype); // creating object using Object.create
+
+//--------------------------------------------------------------------------------------
+
+// C18. Set the Child's Prototype to an Instance of the Parent -------------------------
+
+function Animal() { }
+Animal.prototype = {
+    constructor: Animal,
+    eat: function () {
+        console.log("nom nom nom");
+    },
+    numLegs: 5
+};
+
+function Dog() { }
+
+Dog.prototype = Object.create(Animal.prototype);
+let dogBark = Object.create(Animal.prototype);
+dogBark.eat(); //dogBark inherits all of Animal's properties, including the eat method.
+
+//--------------------------------------------------------------------------------------
+
+// C19. Reset an Inherited Constructor Property ----------------------------------------
+
+/* When an object inherits its prototype from another object, it also inherits the supertype's constructor property. */
+
+/* function Bird() { }
+Bird.prototype = Object.create(Animal.prototype);
+let duck = new Bird();
+duck.constructor // function Animal(){...} */
+
+/* But duck and all instances of Bird should show that they were constructed by Bird and not Animal. To do so, you can manually set Bird's constructor property to the Bird object: */
+
+function Animal() { }
+function Bird() { }
+function Dog() { }
+
+Bird.prototype = Object.create(Animal.prototype);
+Dog.prototype = Object.create(Animal.prototype);
+
+// Only change code below this line
+
+
+Bird.prototype.constructor = Bird;
+Dog.prototype.constructor = Dog;
+let duck = new Bird();
+console.log(duck.constructor);
+let beagle = new Dog();
+
+//---------------------------------------------------------------------------------------
+
+// C20. Add Methods After Inheritance ---------------------------------------------------
+
+/* A constructor function that inherits its prototype object from a supertype constructor function can still have its own methods in addition to inherited methods. */
+
+/* function Animal() { }
+Animal.prototype.eat = function() { console.log("nom nom nom"); };
+
+function Dog() { }
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;
+
+// adding method after inheritance
+Dog.prototype.bark = function(){
+    console.log("Woof!");
+}
+
+let beagle = new Dog(); */
+
+
+//Override Inherited Methods----------------------------------------------------------
+
+Dog.prototype.eat = function () {
+    console.log("chop chop chop");
+};
+
+//C21. Use a Mixin to Add Common Behavior Between Unrelated Objects--------------------
+
+/* let bird = {
+    name: "Donald",
+    numLegs: 2
+  };
+  
+  let boat = {
+    name: "Warrior",
+    type: "race-boat"
+  };
+  
+  let glideMixin = function(obj){
+    obj.glide = function(){
+      console.log("Gliding , woosh!")
+    }
+  }
+  glideMixin(bird);
+  glideMixin(boat); */
+
+//---------------------------------------------------------------------------------------
+
+
+// C22. Use Closure to Protect Properties Within an Object from Being Modified Externally--
+
+/* The simplest way to make this public property private is by creating a variable within the constructor function. This changes the scope of that variable to be within the constructor function versus available globally. This way, the variable can only be accessed and changed by methods also within the constructor function. */
+
+/* function Bird() {
+    let weight = 15; //private variable
+    this.getWeight = function(){
+      return weight;
+    }
+  } */
+
+//----------------------------------------------------------------------------------------
+
+//   C23. Understand the Immediately Invoked Function Expression (IIFE)---------------------
+
+/* (function() {
+    console.log("A cozy nest is ready");
+  })(); */
+
+//------------------------------------------------------------------------------------------
+
+// C24.  Use an IIFE to Create a Module ----------------------------------------------------
+
+/* let motionModule = (function () {
+    return {
+        glideMixin: function (obj) {
+            obj.glide = function () {
+                console.log("Gliding on the water");
+            };
+        },
+        flyMixin: function (obj) {
+            obj.fly = function () {
+                console.log("Flying, wooosh!");
+            };
+        }
+    }
+})(); */
+
+/* Note that you have an immediately invoked function expression(IIFE) that returns an object motionModule.This returned object contains all of the mixin behaviors as properties of the object.The advantage of the module pattern is that all of the motion behaviors can be packaged into a single object that can then be used by other parts of your code.Here is an example using it:
+
+motionModule.glideMixin(duck);
+duck.glide(); */
