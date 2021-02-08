@@ -8,3 +8,11 @@ const emptyStr = str2.split();
 console.log(words);
 console.log(chars);
 console.log(emptyStr);
+
+function splitify(str) {
+    // Only change code below this line
+  
+    return str.split(/\W/);
+    // Only change code above this line
+  }
+  splitify("Hello World,I-am code");

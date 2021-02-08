@@ -37,9 +37,9 @@ Functions with limited side effects - any changes, or mutations, to the state of
 // C4.Use the map Method to Extract Data from an Array -------------------------------------
 
 const users = [
-    { name: 'John', age: 34 },
-    { name: 'Amy', age: 20 },
-    { name: 'camperCat', age: 10 }
+  { name: 'John', age: 34 },
+  { name: 'Amy', age: 20 },
+  { name: 'camperCat', age: 10 }
 ];
 // for (let i = 0; i < users.length; i++) {
 //     const element = users[i].name;
@@ -87,15 +87,15 @@ console.log(names); */
   const usersUnder30 = users.filter(user => user.age < 30);
   console.log(usersUnder30); */
 
-  /* var filteredList = watchList.map(movie =>{
-    return {
-      title:movie.Title,
-      rating:movie.imdbRating
-    }
-    })
-    .filter(movie =>{
-      return parseFloat(movie.rating) >= 8.0; 
-  }) */
+/* var filteredList = watchList.map(movie =>{
+  return {
+    title:movie.Title,
+    rating:movie.imdbRating
+  }
+  })
+  .filter(movie =>{
+    return parseFloat(movie.rating) >= 8.0; 
+}) */
 //----------------------------------------------------------------------------------------
 
 // C7. Return Part of an Array Using the slice Method ------------------------------------
@@ -125,7 +125,7 @@ nonMutatingSplice(inputCities); */
 
 function nonMutatingConcat(original, attach) {
   // Only change code below this line
-    return original.concat(attach);
+  return original.concat(attach);
   // Only change code above this line
 }
 var first = [1, 2, 3];
@@ -139,9 +139,9 @@ var second = [4, 5];
 
 // sum of an array 
 const numbers = [32, 42, 52, 62, 72, 82, 92, 100];
-const newResult = numbers.reduce(function(acc, value){
-  const sum= acc + value;
- return sum;
+const newResult = numbers.reduce(function (acc, value) {
+  const sum = acc + value;
+  return sum;
 });
 console.log(newResult);
 
@@ -156,30 +156,30 @@ console.log(maximum);
 
 // total cost for products 
 const products = [{
-  name:'Pen',
+  name: 'Pen',
   amount: 3,
-  price:10
-},{
-  name:'Khata',
+  price: 10
+}, {
+  name: 'Khata',
   amount: 5,
-  price:60
-},{
-  name:'Scale',
+  price: 60
+}, {
+  name: 'Scale',
   amount: 4,
-  price:15
+  price: 15
 }]
 
-const totalCost = products.reduce((acc, item) =>{
+const totalCost = products.reduce((acc, item) => {
   return acc + item.amount * item.price;
 }, 0)
 console.log(totalCost);
 
 const votes = ['Yes', 'No', 'Yes', 'Yes', 'No', 'Yes', 'Na Vote', 'No', 'Absent'];
 const result = votes.reduce((acc, vote) => {
-  if(acc[vote]){
+  if (acc[vote]) {
     acc[vote]++;
   }
-  else{
+  else {
     acc[vote] = 1;
   }
   return acc;
@@ -192,8 +192,8 @@ console.log(result);
 
 const squareList = arr => {
   return arr
-   .filter(num => num > 0 && num % parseInt(num) === 0)
-          .map(num => Math.pow(num, 2));
+    .filter(num => num > 0 && num % parseInt(num) === 0)
+    .map(num => Math.pow(num, 2));
 };
 const squaredIntegers = squareList([-3, 4.8, 5, 3, -3.2]);
 console.log(squaredIntegers);
@@ -220,36 +220,43 @@ const sortingletter = alphabets.sort();
 
 // it returns value in an ascending order 
 const ascending = numbers.sort((a, b) => {
-    return a - b;
+  return a - b;
 })
 // console.log(ascending);
 
-const descending = numbers.sort((c, d) =>{
-    return d - c;
-}) 
+const descending = numbers.sort((c, d) => {
+  return d - c;
+})
 // console.log(descending);
 
 //here the sort method mutate the original array element, it will takes the last result that it operates and replace the values with original array
 // console.log(numbers);
 
 //to solve this side effect we can use slice method with sort method
-const imutateArray = numbers.slice().sort((e, f) =>{
-    return f - e;
-}) 
+const imutateArray = numbers.slice().sort((e, f) => {
+  return f - e;
+})
 console.log(imutateArray);
 // console.log(numbers);
 
 const students = [
-    {name: 'Kamal', number:45, subject: 'Math'},
-    {name: 'Jamal', number:60, subject: 'Bangla'},
-    {name: 'Dhamal', number:25, subject: 'Religion'},
-    {name:'Pamal', number:13, subject: 'English'},
-    {name:'Famal', number: 77, subject: 'Psychologi'}
+  { name: 'Kamal', number: 45, subject: 'Math' },
+  { name: 'Jamal', number: 60, subject: 'Bangla' },
+  { name: 'Dhamal', number: 25, subject: 'Religion' },
+  { name: 'Pamal', number: 13, subject: 'English' },
+  { name: 'Famal', number: 77, subject: 'Psychologi' }
 ];
 
-const sortingElements = students.slice().sort((a, b) =>{
-    return a.number - b.number;
+const sortingElements = students.slice().sort((a, b) => {
+  return a.number - b.number;
 });
 console.log(sortingElements);
 
-//-----------------------------------------------------------------------------------------s
+//-----------------------------------------------------------------------------------------
+
+// C14. Combine an Array into a String Using the join Method ------------------------------
+
+function sentensify(str) {
+  return str.split(/\W/).join(" ");
+}
+sentensify("May-the-force-be-with-you");
