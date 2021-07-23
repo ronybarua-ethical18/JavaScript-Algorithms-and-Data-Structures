@@ -2,10 +2,7 @@
 
 // sum of an array 
 const numbers = [32, 42, 52, 62, 72, 82, 92, 100];
-const newResult = numbers.reduce(function(acc, value){
-  const sum= acc + value;
- return sum;
-});
+const newResult = numbers.reduce((accumulator, currentValue) => accumulator + currentValue)
 console.log(newResult);
 
 // find out max number 
